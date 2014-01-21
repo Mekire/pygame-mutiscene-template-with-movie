@@ -7,7 +7,7 @@ and in the prepare module.
 """
 
 from . import prepare,tools
-from .states import splash,intro,game
+from .states import splash, intro, game
 
 
 def main():
@@ -16,5 +16,5 @@ def main():
     state_dict = {"SPLASH" : splash.Splash(),
                   "INTRO"  : intro.Intro(),
                   "GAME"   : game.Game()}
-    run_it.setup_states(state_dict,"SPLASH")
+    run_it.setup_states(state_dict, "SPLASH")
     run_it.main()

@@ -1,6 +1,10 @@
+"""
+The class for our Game scene is found here.
+"""
+
 import pygame as pg
 
-from .. import prepare,tools
+from .. import prepare, tools
 
 
 class Game(tools._State):
@@ -12,8 +16,8 @@ class Game(tools._State):
         self.font = pg.font.Font(prepare.FONTS["Fixedsys500c"], 50)
         text = ["This is the game.", "Music should be playing",
                 "to demonstrate", "that the intro movie",
-                "has relinquished control", "of the mixer module.","",
-                "Press escape to return", "to the intro movie"]
+                "has relinquished control", "of the mixer module.", "",
+                "Press escape to return", "to the intro movie."]
         self.rendered_text = self.make_text_list(self.font, text,
                                                  pg.Color("white"), 50, 50)
         self.escape = self.render_font(self.font, "Press Escape",
@@ -47,7 +51,7 @@ class Game(tools._State):
             rendered_text.append(msg_data)
         return rendered_text
 
-    def get_event(self,event):
+    def get_event(self, event):
         """Go back to intro on escape key."""
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:

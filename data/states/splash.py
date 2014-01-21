@@ -3,7 +3,8 @@ The splash screen of the game. The first thing the user sees.
 """
 
 import pygame as pg
-from .. import prepare,tools
+
+from .. import prepare, tools
 
 
 class Splash(tools._State):
@@ -19,7 +20,7 @@ class Splash(tools._State):
         self.image = prepare.GFX['splash1']
         self.rect = self.image.get_rect(center=prepare.SCREEN_RECT.center)
 
-    def update(self,surface,keys,current_time,time_delta):
+    def update(self, surface, keys, current_time, time_delta):
         """Updates the splash screen."""
         self.current_time = current_time
         surface.blit(self.image,self.rect)
@@ -29,7 +30,7 @@ class Splash(tools._State):
         if self.current_time-self.start_time > 1000.0*self.timeout:
             self.done = True
 
-    def get_event(self,event):
+    def get_event(self, event):
         """Get events from Control. Currently changes to next state on any key
         press."""
         if event.type == pg.KEYDOWN:

@@ -1,10 +1,10 @@
 """
-This module contains the primary gameplay state.
+This module contains our intro state with the movie.
 """
 
 import pygame as pg
 
-from .. import prepare,tools
+from .. import prepare, tools
 from ..components import movie
 
 
@@ -36,12 +36,12 @@ class Intro(tools._State):
         self.movie.stop(delete=True)
         return tools._State.cleanup(self)
 
-    def get_event(self,event):
+    def get_event(self, event):
         """End intro scene on any key press."""
         if event.type == pg.KEYDOWN:
             self.done = True
 
-    def draw(self,surface):
+    def draw(self, surface):
         """Blit all items to the surface including the movie."""
         surface.fill(pg.Color("darkslateblue"))
         surface.blit(*self.title)
@@ -49,7 +49,7 @@ class Intro(tools._State):
             surface.blit(*self.ne_key)
         self.movie.draw(surface)
 
-    def update(self,surface,keys,current_time,time_delta):
+    def update(self, surface, keys, current_time, time_delta):
         """Update blink; end scene if intro movie is done; draw everything."""
         self.current_time = current_time
         if self.current_time-self.timer > 1000.0/5.0:

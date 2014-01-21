@@ -11,7 +11,7 @@ class Control(object):
     """Control class for entire project. Contains the game loop, and contains
     the event_loop which passes events to States as needed. Logic for flipping
     states is also found here."""
-    def __init__(self,caption):
+    def __init__(self, caption):
         self.screen = pg.display.get_surface()
         self.caption = caption
         self.done = False
@@ -24,7 +24,7 @@ class Control(object):
         self.state_name = None
         self.state = None
 
-    def setup_states(self,state_dict,start_state):
+    def setup_states(self, state_dict, start_state):
         """Given a dictionary of States and a State to start in,
         builds the self.state_dict."""
         self.state_dict = state_dict
@@ -39,15 +39,15 @@ class Control(object):
             self.done = True
         elif self.state.done:
             self.flip_state()
-        self.state.update(self.screen,self.keys,self.current_time,dt)
+        self.state.update(self.screen, self.keys, self.current_time, dt)
 
     def flip_state(self):
         """When a State changes to done necessary startup and cleanup functions
         are called and the current State is changed."""
-        previous,self.state_name = self.state_name,self.state.next
+        previous,self.state_name = self.state_name, self.state.next
         persist = self.state.cleanup()
         self.state = self.state_dict[self.state_name]
-        self.state.startup(self.current_time,persist)
+        self.state.startup(self.current_time, persist)
         self.state.previous = previous
 
     def event_loop(self):
@@ -63,7 +63,7 @@ class Control(object):
                 self.keys = pg.key.get_pressed()
             self.state.get_event(event)
 
-    def toggle_show_fps(self,key):
+    def toggle_show_fps(self, key):
         """Press f5 to turn on/off displaying the framerate in the caption."""
         if key == pg.K_F5:
             self.show_fps = not self.show_fps
@@ -79,7 +79,7 @@ class Control(object):
             pg.display.update()
             if self.show_fps:
                 fps = self.clock.get_fps()
-                with_fps = "{} - {:.2f} FPS".format(self.caption,fps)
+                with_fps = "{} - {:.2f} FPS".format(self.caption, fps)
                 pg.display.set_caption(with_fps)
 
 
@@ -97,12 +97,12 @@ class _State(object):
         self.previous = None
         self.persist = {}
 
-    def get_event(self,event):
+    def get_event(self, event):
         """Processes events that were passed from the main event loop.
         Must be overloaded in children."""
         pass
 
-    def startup(self,current_time,persistant):
+    def startup(self, current_time, persistant):
         """Add variables passed in persistant to the proper attributes and
         set the start time of the State to the current time."""
         self.persist = persistant
@@ -114,7 +114,7 @@ class _State(object):
         self.done = False
         return self.persist
 
-    def update(self,surface,keys,current_time):
+    def update(self, surface, keys, current_time):
         """Update function for state.  Must be overloaded in children."""
         pass
 
@@ -135,7 +135,7 @@ def load_all_gfx(directory,colorkey=(255,0,255),accept=(".png",".jpg",".bmp")):
     for pic in os.listdir(directory):
         name,ext = os.path.splitext(pic)
         if ext.lower() in accept:
-            img = pg.image.load(os.path.join(directory,pic))
+            img = pg.image.load(os.path.join(directory, pic))
             if img.get_alpha():
                 img = img.convert_alpha()
             else:
@@ -145,30 +145,30 @@ def load_all_gfx(directory,colorkey=(255,0,255),accept=(".png",".jpg",".bmp")):
     return graphics
 
 
-def load_all_music(directory,accept=(".wav",".mp3",".ogg",".mdi")):
+def load_all_music(directory, accept=(".wav", ".mp3", ".ogg", ".mdi")):
     """Create a dictionary of paths to music files in given directory
     if their extensions are in accept."""
     songs = {}
     for song in os.listdir(directory):
         name,ext = os.path.splitext(song)
         if ext.lower() in accept:
-            songs[name] = os.path.join(directory,song)
+            songs[name] = os.path.join(directory, song)
     return songs
 
 
-def load_all_fonts(directory,accept=(".ttf",)):
+def load_all_fonts(directory, accept=(".ttf",)):
     """Create a dictionary of paths to font files in given directory
     if their extensions are in accept."""
-    return load_all_music(directory,accept)
+    return load_all_music(directory, accept)
 
 
-def load_all_movies(directory,accept=(".mpg",)):
+def load_all_movies(directory, accept=(".mpg",)):
     """Create a dictionary of paths to movie files in given directory
     if their extensions are in accept."""
-    return load_all_music(directory,accept)
+    return load_all_music(directory, accept)
 
 
-def load_all_sfx(directory,accept=(".wav",".mp3",".ogg",".mdi")):
+def load_all_sfx(directory, accept=(".wav", ".mp3", ".ogg", ".mdi")):
     """Load all sfx of extensions found in accept.  Unfortunately it is
     common to need to set sfx volume on a one-by-one basis.  This must be done
     manually if necessary in the setup module."""
@@ -176,18 +176,18 @@ def load_all_sfx(directory,accept=(".wav",".mp3",".ogg",".mdi")):
     for fx in os.listdir(directory):
         name,ext = os.path.splitext(fx)
         if ext.lower() in accept:
-            effects[name] = pg.mixer.Sound(os.path.join(directory,fx))
+            effects[name] = pg.mixer.Sound(os.path.join(directory, fx))
     return effects
 
 
-def strip_from_sheet(sheet,start,size,columns,rows=1):
+def strip_from_sheet(sheet, start, size, columns, rows=1):
     """Strips individual frames from a sprite sheet given a start location,
     sprite size, and number of columns and rows."""
     frames = []
     for j in range(rows):
         for i in range(columns):
             location = (start[0]+size[0]*i, start[1]+size[1]*j)
-            frames.append(sheet.subsurface(pg.Rect(location,size)))
+            frames.append(sheet.subsurface(pg.Rect(location, size)))
     return frames
 
 
@@ -196,11 +196,11 @@ def strip_coords_from_sheet(sheet, coords, size):
     frames = []
     for coord in coords:
         location = (coord[0]*size[0], coord[1]*size[1])
-        frames.append(sheet.subsurface(pg.Rect(location,size)))
+        frames.append(sheet.subsurface(pg.Rect(location, size)))
     return frames
 
 
-def get_cell_coordinates(rect,point,size):
+def get_cell_coordinates(rect, point, size):
     """Find the cell of size, within rect, that point occupies."""
     cell = [None, None]
     point = (point[0]-rect.x, point[1]-rect.y)
@@ -211,14 +211,14 @@ def get_cell_coordinates(rect,point,size):
 
 def cursor_from_image(image):
     """Take a valid image and create a mouse cursor."""
-    colors = {(0,0,0,255):"X",
-              (255,255,255,255):"."}
+    colors = {(0,0,0,255) : "X",
+              (255,255,255,255) : "."}
     rect = image.get_rect()
     icon_string = []
     for j in range(rect.height):
         this_row = []
         for i in range(rect.width):
             pixel = tuple(image.get_at((i,j)))
-            this_row.append(colors.get(pixel," "))
+            this_row.append(colors.get(pixel, " "))
         icon_string.append("".join(this_row))
     return icon_string
