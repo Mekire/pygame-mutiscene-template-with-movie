@@ -16,7 +16,7 @@ class Movie(object):
             self.play()
 
     def __getattr__(self, attribute):
-        """This let's us act like Movie is a subclass of pygame.movie.Movie."""
+        """This lets us act like Movie is a subclass of pygame.movie.Movie."""
         return getattr(self._movie, attribute)
 
     def stop(self, delete=False):
